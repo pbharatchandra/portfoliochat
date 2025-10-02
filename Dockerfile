@@ -1,15 +1,15 @@
-FROM python:3.10-slim
-
-# Install Rasa and dependencies in one go
-RUN pip install --no-cache-dir rasa==3.6.21 \
-    google-generativeai \
-    python-dotenv \
-    gspread \
-    oauth2client
+FROM rasa/rasa:3.6.21-full
 
 WORKDIR /app
 COPY . /app
 
+# Install dependencies with retry and timeout options
+RUN pip install --no-cache-dir \
+    --timeout 300 \
+    --retries 5 \
+    google-generativeai python-dotenv gspread oauth2client
+
+USER 1001
 EXPOSE 5005
 
 ENTRYPOINT []
