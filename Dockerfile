@@ -3,11 +3,10 @@ FROM rasa/rasa:3.6.21-full
 WORKDIR /app
 COPY . /app
 
-# Install dependencies as root before switching to non-root user
-RUN pip install --no-cache-dir google-generativeai python-dotenv gspread oauth2client
-
-# Switch to non-root user
-USER 1001
+# Install dependencies using the Rasa user (not root)
+USER 0  # Temporarily switch to root
+RUN pip install --no-cache-dir --user google-generativeai python-dotenv gspread oauth2client
+USER 1001  # Switch back to non-root user
 
 EXPOSE 5005
 
