@@ -3,11 +3,10 @@ FROM rasa/rasa:3.6.21-full
 WORKDIR /app
 COPY . /app
 
-# Install from requirements.txt using --user flag
-USER 0
-RUN pip install --no-cache-dir --user -r requirements.txt
-USER 1001
+# Install dependencies directly (Rasa image already has proper permissions)
+RUN pip install --no-cache-dir google-generativeai python-dotenv gspread oauth2client
 
+USER 1001
 EXPOSE 5005
 
 ENTRYPOINT []
