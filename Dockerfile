@@ -1,15 +1,26 @@
-FROM rasa/rasa:3.6.21-full
+FROM python:3.10-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Rasa and all dependencies
+RUN pip install --no-cache-dir \
+    rasa==3.6.21 \
+    google-generativeai \
+    python-dotenv \
+    gspread \
+    oauth2client
 
 WORKDIR /app
 COPY . /app
 
-# Install dependencies with retry and timeout options
-RUN pip install --no-cache-dir \
-    --timeout 300 \
-    --retries 5 \
-    google-generativeai python-dotenv gspread oauth2client
-
+# Create a non-root user (optional but recommended)
+RUN useradd -m -u 1001 rasauser
 USER 1001
+
 EXPOSE 5005
 
 ENTRYPOINT []
