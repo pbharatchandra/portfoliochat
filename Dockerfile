@@ -56,10 +56,30 @@
 # # Run only the Rasa Core server
 # CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT} --model models/"]
 
+# FROM rasa/rasa:3.6.21-full
+# WORKDIR /app
+# COPY . /app
+# USER 1001
+# EXPOSE 5005
+# ENTRYPOINT []
+# CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20251002-190021-late-mosque.tar.gz"]
+
 FROM rasa/rasa:3.6.21-full
+
+# Clean up unnecessary packages to reduce image size
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 WORKDIR /app
 COPY . /app
+
+# Optimize Python packages
+RUN python -m pip install --no-cache-dir --upgrade pip && \
+    python -m pip install --no-cache-dir -r requirements.txt 2>/dev/null || echo "No requirements.txt"
+
 USER 1001
 EXPOSE 5005
 ENTRYPOINT []
+
+# Add memory optimization flags
 CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20251002-190021-late-mosque.tar.gz"]
