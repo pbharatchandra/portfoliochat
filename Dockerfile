@@ -54,7 +54,7 @@
 # EXPOSE 8000
 
 # # Run only the Rasa Core server
-# CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT} --model models/20251002-190021-late-mosque.tar.gz"]
+# CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT} --model models/"]
 
 FROM rasa/rasa:3.6.21-full
 WORKDIR /app
@@ -62,4 +62,4 @@ COPY . /app
 USER 1001
 EXPOSE 5005
 ENTRYPOINT []
-CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20250930-002348-easy-wrap.tar.gz"]
+CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20251002-190021-late-mosque.tar.gz"]
