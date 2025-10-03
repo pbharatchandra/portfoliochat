@@ -27,31 +27,39 @@
 # CMD ["sh", "-c", "rasa run actions --port 5055 & rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20251002-190021-late-mosque.tar.gz"]
 
 
-FROM python:3.10-slim
+# FROM python:3.10-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
+# # Install system dependencies
+# RUN apt-get update && apt-get install -y \
+#     gcc \
+#     g++ \
+#     && rm -rf /var/lib/apt/lists/*
 
-# Install Rasa and required dependencies
-RUN pip install --no-cache-dir \
-    rasa==3.6.21 \
-    google-generativeai \
-    python-dotenv \
-    gspread \
-    oauth2client
+# # Install Rasa and required dependencies
+# RUN pip install --no-cache-dir \
+#     rasa==3.6.21 \
+#     google-generativeai \
+#     python-dotenv \
+#     gspread \
+#     oauth2client
 
+# WORKDIR /app
+# COPY . /app
+
+# # Create a non-root user (recommended)
+# RUN useradd -m -u 1001 rasauser
+# USER 1001
+
+# # Expose the port Rasa will run on
+# EXPOSE 8000
+
+# # Run only the Rasa Core server
+# CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT} --model models/20251002-190021-late-mosque.tar.gz"]
+
+FROM rasa/rasa:3.6.21-full
 WORKDIR /app
 COPY . /app
-
-# Create a non-root user (recommended)
-RUN useradd -m -u 1001 rasauser
 USER 1001
-
-# Expose the port Rasa will run on
-EXPOSE 8000
-
-# Run only the Rasa Core server
-CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT} --model models/20251002-190021-late-mosque.tar.gz"]
+EXPOSE 5005
+ENTRYPOINT []
+CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20250930-002348-easy-wrap.tar.gz"]
