@@ -69,10 +69,11 @@ FROM rasa/rasa:3.6.21
 WORKDIR /app
 COPY . /app
 
-# Install only essential dependencies
+# Install dependencies as root BEFORE switching user
 RUN pip install --no-cache-dir rasa[spacy] && \
     python -m spacy download en_core_web_sm
 
+# Now switch to non-root user
 USER 1001
 EXPOSE 5005
 ENTRYPOINT []
