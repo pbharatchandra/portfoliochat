@@ -64,22 +64,17 @@
 # ENTRYPOINT []
 # CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20251002-190021-late-mosque.tar.gz"]
 
-FROM rasa/rasa:3.6.21-full
-
-# Clean up unnecessary packages to reduce image size
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+FROM rasa/rasa:3.6.21
 
 WORKDIR /app
 COPY . /app
 
-# Optimize Python packages
-RUN python -m pip install --no-cache-dir --upgrade pip && \
-    python -m pip install --no-cache-dir -r requirements.txt 2>/dev/null || echo "No requirements.txt"
+# Install only essential dependencies
+RUN pip install --no-cache-dir rasa[spacy] && \
+    python -m spacy download en_core_web_sm
 
 USER 1001
 EXPOSE 5005
 ENTRYPOINT []
 
-# Add memory optimization flags
 CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20251002-190021-late-mosque.tar.gz"]
