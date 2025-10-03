@@ -64,17 +64,14 @@
 # ENTRYPOINT []
 # CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT:-5005} --model models/20251002-190021-late-mosque.tar.gz"]
 
-FROM rasa/rasa:3.6.21
+FROM rasa/rasa:3.6.21-full
 
 WORKDIR /app
 COPY . /app
 
-# Install dependencies as root BEFORE switching user
-RUN pip install --no-cache-dir rasa[spacy] && \
-    python -m spacy download en_core_web_sm
+# No need to install additional packages if using full image
+# Just ensure your model and data are copied
 
-# Now switch to non-root user
-USER 1001
 EXPOSE 5005
 ENTRYPOINT []
 
