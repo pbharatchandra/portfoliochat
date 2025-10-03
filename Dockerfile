@@ -54,4 +54,4 @@ USER 1001
 EXPOSE 8000
 
 # Run only the Rasa Core server
-CMD ["rasa", "run", "--enable-api", "--cors", "*", "--port", "8000", "--model", "models/20251002-190021-late-mosque.tar.gz"]
+CMD ["sh", "-c", "rasa run --enable-api --cors \"*\" --port ${PORT} --model models/20251002-190021-late-mosque.tar.gz"]
