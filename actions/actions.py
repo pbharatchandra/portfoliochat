@@ -17,7 +17,7 @@ from google.oauth2.service_account import Credentials
 load_dotenv()
 # Add this after load_dotenv() to debug
 load_dotenv()
-print(f"Gemini API Key present: {bool(os.getenv('AIzaSyAa9Z7LICLKXCx66MBuiLal4CinnWjROFQ'))}")
+print(f"Gemini API Key present: {bool(os.getenv('######'))}")
 print(f"Google Project ID: {os.getenv('GOOGLE_PROJECT_ID')}")
 # --- In-memory fallback log ---
 FALLBACK_LOG: List[Dict[str, str]] = []
